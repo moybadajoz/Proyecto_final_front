@@ -1,13 +1,13 @@
 <template>
-  <index />
+  <register />
 </template>
 
 <script>
-import index from '~/components/index_card.vue'
+import register from '~/components/register_card.vue'
 export default {
   name: 'IndexPage',
   components: {
-    index
+    register
   },
   layout: 'login'
 }

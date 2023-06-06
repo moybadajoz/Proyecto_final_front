@@ -2,17 +2,19 @@
   <div>
     <v-card shaped color="#444" width="500" elevation="3">
       <v-card-title>
-        Login
+        Registrarse
       </v-card-title>
       <v-card-text>
-        <v-form ref="frmLogin" v-model="valid" lazy-validation>
+        <v-form ref="frmSingUp" v-model="valid" lazy-validation>
+          <v-text-field v-model="name" label="Nombre de usuario" :rules="nameRules" required />
           <v-text-field v-model="email" label="Email" :rules="emailRules" required />
-          <v-text-field v-model="password" label="Password" type="password" :rules="passRules" required />
+          <v-text-field v-model="password" label="Contraseña" type="password" :rules="passRules" required />
+          <v-text-field v-model="passConfirm" label="Confirmar Contraseña" type="password" :rules="[v => (passConfirm === password) || 'Las contraseñas no coinciden']" required />
         </v-form>
-        No tienes cuenta?  <a href="\singup">Crear una cuenta</a>
+        Ya tienes cuenta?  <a href="\login">Incia sesion</a>
       </v-card-text>
       <v-card-actions>
-        <v-btn block :disabled="!valid" class="colorBtn" @click="login">
+        <v-btn block :disabled="!valid" class="colorBtn" @click="register">
           Ingresar
           <v-icon dense style="padding-left: 10px;">
             mdi-login
@@ -41,15 +43,22 @@
 <script>
 export default {
   data: () => ({
-    valid: true,
+    valid: false,
+    name: '',
     email: '',
+    password: '',
+    passConfirm: '',
+    nameRules: [
+      v => !!v || 'El nombre no puede estar vacio'
+    ],
     emailRules: [
-      v => !!v || 'Email es requerido',
+      v => !!v || 'El email no puede estar vacio',
       v => /.+@.+\..+/.test(v) || 'El email debe ser valido'
     ],
-    password: '',
     passRules: [
-      v => !!v || 'Contraseña es requerida'
+      v => !!v || 'La contraseña no puede estar vacia',
+      v => v.length >= 8 || 'La contraseña debe tener al menos 8 caracteres',
+      v => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s:])([^\s]){8,32}$/.test(v) || 'La contraseña debe contener una mayuscula, una minuscula, un caracter especial y un numero'
     ],
     resDialog: false,
     resText: ''
@@ -57,14 +66,21 @@ export default {
   }),
 
   methods: {
-    async login () {
-      if (this.email.length === 0 && this.password.length === 0) {
-        return
+    async register () {
+      if (this.email.length === 0 || this.password.length === 0 || this.name.length === 0 || this.passConfirm.length === 0) {
+        this.resText = 'Los espacios no pueden estar vacios'
+        this.resDialog = true
+        setTimeout(() => {
+          this.resDialog = false
+        }, 1500)
+        return 0
       }
-      if (this.$refs.frmLogin.validate()) {
+      if (this.$refs.frmSingUp.validate()) {
         const sendData = {
+          name: this.name,
           email: this.email,
-          password: this.password
+          password: this.password,
+          passConfirm: this.passConfirm
         }
         const config = {
           headers: {
@@ -72,10 +88,10 @@ export default {
             'Access-Control-Allow-Origin': '*'
           }
         }
-        await this.$axios.post('/login', sendData, config)
+        await this.$axios.post('/user', sendData, config)
           .then((res) => {
             if (res.data.msg === 'Success') {
-              this.$router.push('/dashboard')
+              this.$router.push('/login')
             } else {
               this.resText = res.data.error
               this.resDialog = true
