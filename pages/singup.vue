@@ -5,7 +5,7 @@
 <script>
 import register from '~/components/register_card.vue'
 export default {
-  name: 'IndexPage',
+  name: 'SignUpPage',
   components: {
     register
   },

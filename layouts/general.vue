@@ -1,15 +1,21 @@
 <template>
   <v-app>
-    <v-main>
+    <v-row class="align-center justify-center indigo lighten-4" height="100%" width="100%">
       <Nuxt />
-    </v-main>
+    </v-row>
     <v-footer padless>
       <v-col
         class="text-center"
-        cols="12"
+        width="100%"
       >
         Made by Moises Badajoz
       </v-col>
     </v-footer>
   </v-app>
 </template>
+
+<script>
+export default {
+  name: 'General'
+}
+</script>

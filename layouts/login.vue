@@ -1,12 +1,12 @@
 <template>
   <v-app>
-    <v-row class="centrado">
+    <v-row class="align-center justify-center cyan lighten-4" height="100%" width="100%">
       <Nuxt />
     </v-row>
     <v-footer padless>
       <v-col
         class="text-center"
-        cols="12"
+        width="100%"
       >
         Made by Moises Badajoz
       </v-col>
@@ -19,15 +19,3 @@ export default {
   name: 'Login'
 }
 </script>
-
-<style scoped>
-.centrado {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background-color: lightcyan;
-}
-</style>

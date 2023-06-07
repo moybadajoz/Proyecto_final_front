@@ -1,8 +1,16 @@
 <template>
   <div>
-    <v-card shaped color="#444" width="500" elevation="3">
+    <v-card
+      color="pink lighten-3"
+      width="500"
+      height="500"
+      elevation="9"
+      class="d-flex align-content-space-between flex-column align-center flex-wrap"
+    >
       <v-card-title>
-        Login
+        <h1>
+          Login
+        </h1>
       </v-card-title>
       <v-card-text>
         <v-form ref="frmLogin" v-model="valid" lazy-validation>
@@ -11,8 +19,8 @@
         </v-form>
         No tienes cuenta?  <a href="\singup">Crear una cuenta</a>
       </v-card-text>
-      <v-card-actions>
-        <v-btn block :disabled="!valid" class="colorBtn" @click="login">
+      <v-card-actions class="d-flex col align-content-end justify-center flex-wrap">
+        <v-btn width="100%" block :disabled="!valid" class="colorBtn" @click="login">
           Ingresar
           <v-icon dense style="padding-left: 10px;">
             mdi-login
