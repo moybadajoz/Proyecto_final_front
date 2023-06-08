@@ -5,7 +5,7 @@
 <script>
 import Login from '~/components/login_card.vue'
 export default {
-  name: 'IndexPage',
+  name: 'LoginPage',
   components: {
     Login
   },
