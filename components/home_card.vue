@@ -36,8 +36,25 @@
 </template>
 <script>
 export default {
+  data () {
+
+  },
+  created () {
+    this.loadNotes()
+  },
   methods: {
     algo () {
+    },
+    async loadNotes () {
+      await this.$axios.get('/note')
+        .then((res) => {
+          // eslint-disable-next-line no-console
+          console.log(res)
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.log(error)
+        })
     }
   }
 }

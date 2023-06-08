@@ -90,13 +90,7 @@ export default {
           password: this.password,
           passConfirm: this.passConfirm
         }
-        const config = {
-          headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
-            'Access-Control-Allow-Origin': '*'
-          }
-        }
-        await this.$axios.post('/user', sendData, config)
+        await this.$axios.post('/user', sendData)
           .then((res) => {
             if (res.data.msg === 'Success') {
               this.$router.push('/login')

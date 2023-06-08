@@ -74,16 +74,11 @@ export default {
           email: this.email,
           password: this.password
         }
-        const config = {
-          headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
-            'Access-Control-Allow-Origin': '*'
-          }
-        }
-        await this.$axios.post('/login', sendData, config)
+        await this.$axios.post('/login', sendData)
           .then((res) => {
             if (res.data.msg === 'Success') {
-              this.$router.push('/dashboard')
+              localStorage.setItem('token', res.data.token)
+              this.$router.push('/home')
             } else {
               this.resText = res.data.error
               this.resDialog = true
