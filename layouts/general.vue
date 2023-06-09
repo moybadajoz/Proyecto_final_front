@@ -19,7 +19,7 @@
           <v-icon>mdi-cog</v-icon>
         </v-btn>
       </v-app-bar>
-      <v-card-text>
+      <v-card-text style="min-height: 900px;">
         <Nuxt />
       </v-card-text>
       <v-footer padless height="45px">

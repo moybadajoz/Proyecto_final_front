@@ -1,22 +1,30 @@
 <template>
-  <div class="d-flex justify-center flex-wrap px-5 pt-1 mx-0" width="100%">
-    <v-card
-      v-for="n in 30"
-      :key="n"
-      class="overflow-hidden mx-2 my-2"
-      width="250px"
-      height="250px"
-      elevation="2"
-      color="#FFEE58"
-      @click="algo"
+  <div
+    class="d-flex flex-wrap justify-space-around px-10 pt-1 mx-10"
+    width="100%"
+  >
+    <v-hover
+      v-for="(n, idx) in notesList"
+      :key="idx"
+      v-slot="{ hover }"
     >
-      <v-card-title class="d-inline-block subtitle-1 text-truncate pt-3 pb-0" style="max-width: 250px; color: #000">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut dolorem, natus itaque provident tenetur molestias rerum iure doloribus laborum ad beatae accusantium fugiat, impedit, quibusdam recusandae quis unde qui illum.
-      </v-card-title>
-      <v-card-text class="caption" style="max-width: 250px; color: #000">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio magni recusandae, quam cumque molestiae nobis laboriosam labore temporibus voluptatum! Cumque hic illum sunt illo nulla laborum, exercitationem provident id quaerat dolores esse, ab odio inventore? Magnam, dicta! Illum, ratione aliquam totam vel natus excepturi quam ea provident minus corrupti quidem perferendis velit quasi quo ipsa molestias numquam beatae ut vero distinctio voluptate atque sequi soluta. Repellendus beatae unde praesentium possimus aliquid autem nobis necessitatibus, eveniet enim assumenda blanditiis facere! Quidem vitae debitis maiores vero autem repudiandae, fugit excepturi iure? Aperiam officia sapiente tempora assumenda enim deserunt soluta a, dolorem alias? Velit rerum unde omnis, doloribus, ipsam perferendis eos quam ipsum consequuntur qui at hic iste obcaecati dignissimos, a veritatis sed? Animi, culpa ea eos veniam officia laudantium optio quis labore sed dolore voluptas, repudiandae praesentium rerum nostrum. Aperiam soluta eveniet sint, architecto recusandae nihil mollitia, veritatis enim suscipit molestiae ad reprehenderit dicta nemo excepturi sunt obcaecati nisi culpa ut in est debitis impedit accusantium! Hic laboriosam assumenda ex quo velit aut obcaecati, dicta nesciunt accusamus quos architecto facere numquam dolorum, molestiae sapiente molestias et eveniet quaerat nam, quam voluptate id optio! Ex, omnis quaerat! Rerum eligendi quod molestiae illo natus ullam voluptatem totam? Et est ex nisi sit recusandae eaque veritatis ipsum error molestias! Suscipit, nesciunt cumque ea quis est natus similique esse a velit? Hic sint perferendis et sed iusto porro alias maxime ipsa, tenetur laboriosam aliquid dolorem. Reprehenderit consectetur aspernatur aliquid assumenda, exercitationem nisi magnam deserunt maiores facilis iusto blanditiis possimus delectus officia, cumque sed voluptatem est eius quos? Veniam totam facere doloribus labore, accusantium ipsum tempora perspiciatis suscipit, corrupti molestiae officia corporis cum modi aut? Incidunt, eligendi at pariatur labore aliquam laboriosam necessitatibus veniam nisi! Quis soluta iusto ex voluptates illum! In eum blanditiis vitae nisi fugiat accusantium modi eaque saepe unde iure perspiciatis dolores fugit, obcaecati nesciunt! Fugiat ipsam vero possimus accusantium inventore incidunt quod delectus, qui quo in placeat quam deleniti fugit doloremque voluptatibus perspiciatis et totam repellendus! Expedita omnis alias laborum eos dolorum exercitationem voluptatum fuga amet eius rerum quisquam perspiciatis enim repellat nobis iusto praesentium illum illo, placeat quidem, blanditiis nesciunt nihil. Perferendis esse distinctio vel? Sint quisquam earum culpa nobis consectetur maxime hic facilis, aliquam perspiciatis doloremque quo aut similique quod illo eveniet laborum necessitatibus magni libero doloribus, nihil, mollitia id quibusdam esse! Officiis hic aspernatur modi repellendus at labore adipisci harum quisquam impedit sed numquam, accusantium ab dolor necessitatibus sit consequuntur. Deleniti optio doloribus commodi neque laboriosam fugiat reiciendis quidem aliquam ipsam atque architecto explicabo magnam debitis dignissimos dolore perspiciatis rerum accusamus, nesciunt quibusdam aliquid sint! Possimus tenetur esse ut facilis voluptates blanditiis, consectetur sunt, fugit animi natus, laudantium labore exercitationem quibusdam beatae quas veniam error! Magnam debitis ratione aspernatur esse eius suscipit earum ullam explicabo, sequi soluta. Voluptas, sit ad. Neque, unde. Nobis, magnam recusandae! Nulla aspernatur voluptates delectus eius corrupti nisi! Alias quia porro nemo nisi labore veniam reprehenderit possimus ullam officia? Explicabo numquam repellendus natus quibusdam, nobis ab?
-      </v-card-text>
-    </v-card>
+      <v-card
+        :elevation="hover ? 20 : 3"
+        class="overflow-hidden mx-2 my-2 align-self-start"
+        width="250px"
+        height="230px"
+        tile
+        :color="n.color"
+        @click="editar(n)"
+      >
+        <v-card-title class="d-inline-block subtitle-1 text-truncate pt-3 pb-0" style="max-width: 250px; color: #000">
+          {{ n.title }}
+        </v-card-title>
+        <v-card-text class="caption" style="max-width: 250px; color: #000;">
+          {{ n.content }}
+        </v-card-text>
+      </v-card>
+    </v-hover>
     <v-btn
       fab
       right
@@ -27,29 +35,320 @@
       width="70px"
       height="70px"
       class="mr-10 mb-16"
+      @click="newNote()"
     >
       <v-icon class="display-3">
         mdi-plus
       </v-icon>
     </v-btn>
+
+    <div>
+      <v-row justify="center">
+        <v-dialog
+          v-model="noteDialog"
+          persistent
+          max-width="600px"
+          max-height="600px"
+        >
+          <v-card light max-height="600px" class="overflow-auto pt-2" :color="noteColor">
+            <v-card
+              width="100%"
+              class="overflow-auto pb-0 px-1 pt-1"
+              max-height="100px"
+              flat
+              color="transparent"
+            >
+              <v-textarea
+                v-model="noteTitle"
+                :value="noteTitle"
+                label="Titulo"
+                solo
+                flat
+                auto-grow
+                rows="1"
+                class="headline"
+                background-color="transparent"
+              />
+            </v-card>
+            <v-card
+              class="overflow-auto pb-0 px-1"
+              max-height="440px"
+              flat
+              color="transparent"
+            >
+              <v-textarea
+                v-model="noteContent"
+                :value="noteContent"
+                max-height="600px"
+                label="Escribe una nota"
+                solo
+                flat
+                rows="1"
+                auto-grow
+                background-color="transparent"
+                class="overflow-hidden pt-0"
+              />
+            </v-card>
+            <v-card-actions>
+              <v-menu
+                v-if="noteModeEdit"
+              >
+                <template #activator="{ on, attrs }">
+                  <v-btn
+                    color="error"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon>
+                      mdi-trash-can
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <v-card light>
+                  <v-card-title class="title">
+                    Eliminar nota
+                  </v-card-title>
+                  <v-card-text>
+                    Esta accion no se podra deshacer
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer />
+                    <v-btn color="warning">
+                      Cancelar
+                    </v-btn>
+                    <v-btn color="error" @click="eliminar(noteId)">
+                      Eliminar
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-menu>
+              <v-spacer />
+              <v-menu>
+                <template #activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    color="cyan"
+                    v-on="on"
+                  >
+                    <v-icon>
+                      mdi-palette
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <v-color-picker
+                  v-model="noteColor"
+                  :swatches="swatches"
+                  show-swatches
+                  hide-canvas
+                  hide-sliders
+                  hide-inputs
+                  mode="hexa"
+                  flat
+                />
+              </v-menu>
+              <v-btn
+                color="warning"
+                @click="noteDialog = false"
+              >
+                Cerrar
+              </v-btn>
+              <v-btn
+                v-if="!noteModeEdit"
+                dark
+                color="success"
+                @click="guardar()"
+              >
+                Guardar
+              </v-btn>
+              <v-btn
+                v-else
+                dark
+                color="success"
+                @click="update(noteId)"
+              >
+                Actualizar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </div>
+
+    <div>
+      <v-row justify="center">
+        <v-dialog
+          v-model="alertDialog"
+          persistent
+          width="400px"
+          height="200px"
+        >
+          <v-card
+            light
+            width="400px"
+            height="200px"
+          >
+            <v-card-title
+              class="justify-center display-1"
+            >
+              Alerta
+            </v-card-title>
+            <v-card-text
+              class="pt-5 title"
+            >
+              {{ alertMsg }}
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </div>
   </div>
 </template>
 <script>
 export default {
-  data () {
-
-  },
+  data: () => ({
+    alertDialog: false,
+    noteModeEdit: false,
+    alertMsg: '',
+    notesList: '',
+    noteTitle: '',
+    noteContent: '',
+    noteColor: '#FFFFFF',
+    noteDialog: false,
+    swatches: [
+      ['#FFFFFF'],
+      ['#FFF176'],
+      ['#4DD0E1'],
+      ['#F06292'],
+      ['#E57373'],
+      ['#90A4AE'],
+      ['#8D6E63'],
+      ['#FF7043'],
+      ['#9CCC65'],
+      ['#29B6F6']
+    ]
+  }),
   created () {
     this.loadNotes()
   },
   methods: {
-    algo () {
+    editar (note) {
+      this.noteModeEdit = true
+      this.noteTitle = note.title
+      this.noteContent = note.content
+      this.noteColor = note.color
+      this.noteId = note._id
+      this.noteDialog = true
+    },
+    async guardar () {
+      if (!this.noteTitle && !this.noteContent) {
+        this.alertMsg = 'La nota no puede estar vacia'
+        this.alertDialog = true
+        setTimeout(() => {
+          this.alertDialog = false
+        }, 1500)
+        return 1
+      }
+      const sendData = {
+        title: this.noteTitle,
+        content: this.noteContent,
+        color: this.noteColor
+      }
+      await this.$axios.post('/note', sendData)
+        .then((res) => {
+          if (res.data.msg === 'Success') {
+            this.alertMsg = 'Nota guardada'
+            this.alertDialog = true
+            setTimeout(() => {
+              this.alertDialog = false
+            }, 1000)
+            this.noteDialog = false
+            this.loadNotes()
+          } else {
+            this.alertMsg = 'Ocurrio un error'
+            this.alertDialog = true
+            setTimeout(() => {
+              this.alertDialog = false
+            }, 1500)
+          }
+        }).catch((error) => {
+          // eslint-disable-next-line no-console
+          console.log(error)
+        })
+    },
+    async update (id) {
+      if (!this.noteTitle && !this.noteContent) {
+        this.alertMsg = 'La nota no puede estar vacia'
+        this.alertDialog = true
+        setTimeout(() => {
+          this.alertDialog = false
+        }, 1500)
+        return 1
+      }
+      const sendData = {
+        title: this.noteTitle,
+        content: this.noteContent,
+        color: this.noteColor
+      }
+      await this.$axios.put(`/note/${id}`, sendData)
+        .then((res) => {
+          if (res.data.msg === 'Success') {
+            this.alertMsg = 'Nota guardada'
+            this.alertDialog = true
+            setTimeout(() => {
+              this.alertDialog = false
+            }, 1000)
+            this.loadNotes()
+          } else {
+            this.alertMsg = 'Ocurrio un error'
+            this.alertDialog = true
+            setTimeout(() => {
+              this.alertDialog = false
+            }, 1500)
+          }
+        }).catch((error) => {
+          // eslint-disable-next-line no-console
+          console.log(error)
+        })
+    },
+    async eliminar (id) {
+      await this.$axios.delete(`/note/${id}`)
+        .then((res) => {
+          if (res.data.msg === 'Success') {
+            this.alertMsg = 'Nota eliminada'
+            this.alertDialog = true
+            setTimeout(() => {
+              this.alertDialog = false
+            }, 1000)
+            this.noteModeEdit = false
+            this.noteTitle = ''
+            this.noteContent = ''
+            this.noteColor = ''
+            this.noteId = ''
+            this.noteDialog = false
+            this.loadNotes()
+          } else {
+            this.alertMsg = 'Ocurrio un error'
+            this.alertDialog = true
+            setTimeout(() => {
+              this.alertDialog = false
+            }, 1000)
+          }
+        }).catch((error) => {
+          // eslint-disable-next-line no-console
+          console.log(error)
+        })
+    },
+    newNote () {
+      this.noteTitle = ''
+      this.noteColor = '#FFFFFF'
+      this.noteContent = ''
+      this.noteModeEdit = false
+      this.noteDialog = true
     },
     async loadNotes () {
       await this.$axios.get('/note')
         .then((res) => {
-          // eslint-disable-next-line no-console
-          console.log(res)
+          this.notesList = res.data.data
         })
         .catch((error) => {
           // eslint-disable-next-line no-console
