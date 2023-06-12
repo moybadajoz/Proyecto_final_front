@@ -269,6 +269,10 @@ export default {
             this.noteDialog = false
             this.loadNotes()
           } else {
+            if (res.data.error === 'Session Expired') {
+              localStorage.removeItem('token')
+              this.$router.push('/')
+            }
             this.alertMsg = 'Ocurrio un error'
             this.alertDialog = true
             setTimeout(() => {
@@ -304,6 +308,10 @@ export default {
             }, 1000)
             this.loadNotes()
           } else {
+            if (res.data.error === 'Session Expired') {
+              localStorage.removeItem('token')
+              this.$router.push('/')
+            }
             this.alertMsg = 'Ocurrio un error'
             this.alertDialog = true
             setTimeout(() => {
@@ -332,6 +340,10 @@ export default {
             this.noteDialog = false
             this.loadNotes()
           } else {
+            if (res.data.error === 'Session Expired') {
+              localStorage.removeItem('token')
+              this.$router.push('/')
+            }
             this.alertMsg = 'Ocurrio un error'
             this.alertDialog = true
             setTimeout(() => {
@@ -353,6 +365,10 @@ export default {
     async loadNotes () {
       await this.$axios.get('/note')
         .then((res) => {
+          if (res.data.error === 'Session Expired') {
+            localStorage.removeItem('token')
+            this.$router.push('/')
+          }
           this.notesList = res.data.data
         })
         .catch((error) => {

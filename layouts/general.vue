@@ -170,6 +170,8 @@ export default {
             this.name = res.data.data.name
             this.email = res.data.data.email
             this.id = res.data.data._id
+          } else if (res.data.error === 'Session Expired') {
+            this.logout()
           }
         })
     },
