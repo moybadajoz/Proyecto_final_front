@@ -16,6 +16,12 @@
 
 <script>
 export default {
-  name: 'Login'
+  name: 'Login',
+  created () {
+    if (localStorage.getItem('token')) {
+      this.$router.push('/home')
+      return 0
+    }
+  }
 }
 </script>

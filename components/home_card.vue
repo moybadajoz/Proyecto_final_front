@@ -41,7 +41,7 @@
         mdi-plus
       </v-icon>
     </v-btn>
-
+    <!--Dialogo crear y editar nota-->
     <div>
       <v-row justify="center">
         <v-dialog
@@ -173,7 +173,7 @@
         </v-dialog>
       </v-row>
     </div>
-
+    <!--Dialogo de alerta-->
     <div>
       <v-row justify="center">
         <v-dialog
@@ -201,6 +201,7 @@
         </v-dialog>
       </v-row>
     </div>
+    <!--editar perfil-->
   </div>
 </template>
 <script>
@@ -228,6 +229,10 @@ export default {
     ]
   }),
   created () {
+    if (!localStorage.getItem('token')) {
+      this.$router.push('/')
+      return 0
+    }
     this.loadNotes()
   },
   methods: {

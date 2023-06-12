@@ -61,9 +61,7 @@ export default {
     ],
     resDialog: false,
     resText: ''
-
   }),
-
   methods: {
     async login () {
       if (this.email.length === 0 && this.password.length === 0) {

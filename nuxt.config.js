@@ -60,20 +60,24 @@ export default {
       callback: '/',
       home: '/'
     },
-    localStorage: false,
+    localStorage: true,
     reserOnError: true,
     strategies: {
       local: {
         cookie: false,
         user: {
-          property: 'user'
+          property: 'token'
+        },
+        token: {
+          property: 'token',
+          required: true
         },
         endpoints: {
           login: {
             url: '/login',
             method: 'post'
           },
-          user: false
+          user: true
         },
         rewriteRedirects: true,
         fullPathRedirects: true
